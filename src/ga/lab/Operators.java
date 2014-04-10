@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Operators {
 
-	// Відстань Хемінга
+	// Р’С–РґСЃС‚Р°РЅСЊ РҐРµРјРјС–РЅРіР°
 
 	public static int getHammingDistance(String ch1, String ch2) {
 		if (ch1.length() != ch2.length()) {
@@ -19,9 +19,9 @@ public class Operators {
 		return distance;
 	}
 
-	// Евклідова відстань
+	// Р•РІРєР»С–РґРѕРІР° РІС–РґСЃС‚Р°РЅСЊ
 
-	// Функція співучасті
+	// Р¤СѓРЅРєС†С–СЏ СЃРїС–РІСѓС‡Р°СЃС‚С–
 
 	public static double sharingFunction(String ch1, String ch2, int radius, int alpha) {
 		double sharingFunction;
@@ -33,20 +33,20 @@ public class Operators {
 		return sharingFunction;
 	}
 
-	// Радіус ніші
+	// Р Р°РґС–СѓСЃ РЅС–С€С–
 
 	public static double calculateRadius(int dimension, int numberOfExtr, double r) {
-		// я перетворила корінь степеня D в таке, бо не знайшлакорінь певного
-		// степеня в бібліотеці
+		// СЏ РїРµСЂРµС‚РІРѕСЂРёР»Р° РєРѕСЂС–РЅСЊ СЃС‚РµРїРµРЅСЏ D РІ С‚Р°РєРµ, Р±Рѕ РЅРµ Р·РЅР°Р№С€Р»Р° РєРѕСЂС–РЅСЊ РїРµРІРЅРѕРіРѕ
+        // СЃС‚РµРїРµРЅСЏ РІ Р±С–Р±Р»С–РѕС‚РµС†С–
 		return r / Math.sqrt(Math.pow(numberOfExtr, 1 / dimension));
 	}
 
-	// допоміжна функція r (поки не вшарила як її рахувати, додаю статтю де на 5 сторінці вона є 2.5 The Niche Radius Problem)
+    // РґРѕРїРѕРјС–Р¶РЅР° С„СѓРЅРєС†С–СЏ r (РїРѕРєРё РЅРµ РІС€Р°СЂРёР»Р° СЏРє С—С— СЂР°С…СѓРІР°С‚Рё, РґРѕРґР°СЋ СЃС‚Р°С‚С‚СЋ РґРµ РЅР° 5 СЃС‚РѕСЂС–РЅС†С– РІРѕРЅР° С” 2.5 The Niche Radius problem)
 	public static double calculateR(int dimension, int numberOfExtr, double r) {
 		return 0;
 	}
 
-	// Число ніші
+	// Р§РёСЃР»Рѕ РЅС–С€С–
 
 	public static double calculateNicheNumber(String ch1, ArrayList<String> selectedChList, int N, int radius, int alpha) {
 		double m = 0;
@@ -56,9 +56,7 @@ public class Operators {
 		return m;
 	}
 
-	// оцінка - функція здоров'я
-	// хм! не знаю як другим параметром передавати функцію відповідну %) тому
-	// поки для мене вихід описати окремо для всіх функцій F15, F16, F18 та F19
+	//  РѕС†С–РЅРєР° - С„СѓРЅРєС†С–СЏ Р·РґРѕСЂРѕРІ'СЏ
 	public static double fitnessFunctionF15(int n, double x) {
 		double fitness = 0;
 		for (int i = 0; i < n; i++) {
@@ -67,7 +65,7 @@ public class Operators {
 		return fitness = 1 / n * fitness;
 	}
 
-	//думаю що теж варто наперед мати таблицб обраховної функції здоров'я для всіх хромосом? Що скажеш?
+	// РґСѓРјР°СЋ, С‰Рѕ С‚РµР¶ РІР°СЂС‚Рѕ РЅР°РїРµСЂРµРґ РјР°С‚Рё С‚Р°Р±Р»РёС†СЋ РѕР±СЂР°С…РѕРІР°РЅРѕС— С„СѓРЅРєС†С–С— Р·РґРѕСЂРѕРІ'СЏ РґР»СЏ РІСЃС–С… С…СЂРѕРјРѕСЃРѕРј
 	public static HashMap<Integer, Double> calcInitialFitnessMap(int n, String funcName) {
 		HashMap<Integer, Double> initialFitnessMap = new HashMap<Integer, Double>();
 		for (int i = 1; i <= 1000; i++) {
@@ -82,17 +80,16 @@ public class Operators {
 		return initialFitnessMap;
 	}
 	
-	//Пониження функції пристосованості в ніші
+	// РџРѕРЅРёР¶РµРЅРЅСЏ С„СѓРЅРєС†С–С— РїСЂРёСЃС‚РѕСЃРѕРІР°РЅРѕСЃС‚С– РІ РЅС–С€С–
+
+    // РљСЂРѕСЃРёРЅРіРѕРІРµСЂ
+
+    // Р’С–РґР±С–СЂ
+
+    // РњСѓС‚Р°С†С–СЏ
 	
-	//Кросинговер
 	
-	//Відбір
-	
-	//Мутація
-	
-	
-	
-	// відбір
+	// РІС–РґР±С–СЂ
 	// public static ArrayList<String> selection (int dimension)
 	// {
 	// ArrayList<String> selectedChromosomes = new ArrayList<String>();
