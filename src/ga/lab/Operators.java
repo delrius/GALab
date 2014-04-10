@@ -60,9 +60,9 @@ public class Operators {
 	public static double fitnessFunctionF15(int n, double x) {
 		double fitness = 0;
 		for (int i = 0; i < n; i++) {
-			fitness = Math.pow(Math.sin(5 * Math.PI * x), 6);
+			fitness += Math.pow(Math.sin(5 * Math.PI * x), 6);
 		}
-		return fitness = 1 / n * fitness;
+		return (1 / n) * fitness;
 	}
 
 	// думаю, що теж варто наперед мати таблицю обрахованої функції здоров'я для всіх хромосом
