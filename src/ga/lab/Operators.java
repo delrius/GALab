@@ -76,16 +76,10 @@ public class Operators {
     }
 
     // думаю, що теж варто наперед мати таблицю обрахованої функції здоров'я для всіх хромосом
-    public static HashMap<Integer, Double> calcInitialFitnessMap(int n, String funcName) {
+    public static HashMap<Integer, Double> calcInitialFitnessMap(int n, Functions function) {
         HashMap<Integer, Double> initialFitnessMap = new HashMap<Integer, Double>();
         for (int i = 1; i <= 1000; i++) {
-            if (funcName.equals("F15")) {
-                initialFitnessMap.put(i, Functions.F15.calculate(i / 1000.));
-            } else if (funcName.equals("F16")) { // to do
-            } else if (funcName.equals("F18")) { // to do
-            } else if (funcName.equals("F19")) { // to do
-            }
-
+            initialFitnessMap.put(i, function.calculate(i / 1000.));
         }
         return initialFitnessMap;
     }
