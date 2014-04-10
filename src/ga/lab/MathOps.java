@@ -2,10 +2,11 @@ package ga.lab;
 
 public class MathOps {
     public static Double root(int number, int dimension) {
-        return Math.pow(Math.E, Math.log(number)/ dimension );
+        return root((double) number, dimension);
     }
 
-    public static void main(String[] args) {
-        System.out.println(root(16*16*16*16, 4));
+    public static Double root(Double number, int dimension) {
+        assert (dimension != 0);
+        return Math.pow(Math.E, Math.log(number) / dimension);
     }
 }
