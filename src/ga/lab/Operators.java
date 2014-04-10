@@ -44,8 +44,25 @@ public class Operators {
     }
 
     // допоміжна функція r (поки не вшарила як її рахувати, додаю статтю де на 5 сторінці вона є 2.5 The Niche Radius problem)
-    public static double calculateR(int dimension, int numberOfExtr, double r) {
-        return 0;
+
+    /**
+     * Calculates the r-value
+     *
+     * @param dimension dimension space
+     * @param lower lower bound of x
+     * @param upper upper bound of x
+     * @return r
+     */
+    public static double calculateR(int dimension, double lower, double upper) {
+        //TODO: check
+        double accum = 0;
+        for (int i =0 ; i< dimension ; i++) {
+            accum += Math.pow((upper - lower), 2);
+        }
+
+        double r = (1./2) * Math.sqrt(accum);
+
+        return r;
     }
 
     // Число ніші
