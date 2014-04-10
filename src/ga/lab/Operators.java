@@ -38,7 +38,7 @@ public class Operators {
 	public static double calculateRadius(int dimension, int numberOfExtr, double r) {
 		// я перетворила корінь степеня D в таке, бо не знайшла корінь певного
         // степеня в бібліотеці
-		return r / Math.sqrt(Math.pow(numberOfExtr, 1 / dimension));
+		return r / MathOps.root(numberOfExtr, dimension);
 	}
 
     // допоміжна функція r (поки не вшарила як її рахувати, додаю статтю де на 5 сторінці вона є 2.5 The Niche Radius problem)
