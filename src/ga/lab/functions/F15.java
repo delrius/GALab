@@ -2,7 +2,7 @@ package ga.lab.functions;
 
 import java.util.List;
 
-public class F15 extends Function<Double, Double> {
+public class F15 extends Function {
 
     @Override
     public Double calculate(List<Double> args) {
