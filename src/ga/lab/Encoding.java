@@ -1,5 +1,7 @@
 package ga.lab;
 
+import ga.lab.functions.Functions;
+
 import java.util.HashMap;
 
 public class Encoding {
@@ -27,7 +29,15 @@ public class Encoding {
 		HashMap<Integer, String> res = encode();
 		System.out.println(res.get(55));
 		System.out.println(res.get(1000));
-		System.out.println(Operators.getHammingDistance(res.get(55), res.get(1000)));
-
+		//System.out.println(Operators.getHammingDistance(res.get(55), res.get(1000)));
+		//System.out.println(Operators.mutate(res.get(55)).toCharArray());
+		//res.get(55)
+		Chromosome a=new Chromosome(10, Functions.F15);
+		System.out.println(a.getChromosome());
+		System.out.println(Integer.valueOf(a.getChromosome()));
+		System.out.println(a.getFitness());
+	//	System.out.println(Chromosome.decodeChromosome(a.getChromosome()));
+		HashMap<Chromosome,Double> b = Algorithm.encodeMap(Functions.F15);
+		System.out.println(b.get(a));
 	}
 }
