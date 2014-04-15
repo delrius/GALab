@@ -11,8 +11,8 @@ public class Operators {
 
 	// map: pair encoded chromosome and double x
 	public static HashMap<Chromosome, Double> encodeMap(Functions fun) {
-		HashMap<Chromosome, Double> encodeResult = new HashMap<Chromosome, Double>();
-		for (Integer i = 1; i <= 1000; i++) {
+		HashMap<Chromosome, Double> encodeResult = new HashMap<>();
+		for (Integer i = 0; i <= 1000; i++) {
 			encodeResult.put(new Chromosome(i), i / 1000.);
 		}
 		return encodeResult;
@@ -20,8 +20,8 @@ public class Operators {
 
 	// map: double x and double fitness
 	public static HashMap<Double, Double> fitnessMap(Functions fun) {
-		HashMap<Double, Double> fitnessMap = new HashMap<Double, Double>();
-		for (Integer i = 1; i <= 1000; i++) {
+		HashMap<Double, Double> fitnessMap = new HashMap<>();
+		for (Integer i = 0; i <= 1000; i++) {
 			fitnessMap.put(i / 1000., fun.calculate(i / 1000.));
 		}
 		return fitnessMap;
@@ -80,9 +80,7 @@ public class Operators {
 			accum += Math.pow((upper - lower), 2);
 		}
 
-		double r = (1. / 2) * Math.sqrt(accum);
-
-		return r;
+        return (1. / 2) * Math.sqrt(accum);
 	}
 
 	// calculate Niche number

@@ -32,11 +32,10 @@ public class Chromosome {
 
 	//encode chromosome
 	public static String encodeChromosome(Integer ch) {
-		String res = Integer.toBinaryString(grayEncode(ch)).toString();
-		if (res.length() == LENGTH) {
-		} else {
+		String res = Integer.toBinaryString(grayEncode(ch));
+		if (res.length() != LENGTH) {
 			String temp1 = "0000000000" + res;
-			res = (temp1).substring(temp1.length() - 10, temp1.length());
+			res = temp1.substring(temp1.length() - 10, temp1.length());
 		}
 		return res;
 
@@ -48,9 +47,8 @@ public class Chromosome {
 		int position = rand.nextInt(LENGTH) + 1;
 		if (chr[position] == '0') {
 			chr[position] = '1';
-		} else if (chr[position] == '1') {
+		} else {
 			chr[position] = '0';
-
 		}
 		return new Chromosome(String.valueOf(chr));
 
@@ -81,13 +79,8 @@ public class Chromosome {
 				new Chromosome(String.valueOf(child2)) };
 	}
 
-	// selection of chr ?! it can cause not present chr
 	public static Chromosome generateRandom() {
-		char[] chr = new char[LENGTH];
-		for (int i = 0; i < chr.length; i++) {
-			chr[i] = (char) (rand.nextInt(1) + 1);
-		}
-		return new Chromosome(String.valueOf(chr));
+		return new Chromosome(rand.nextInt(1001));
 	}
 
 }
