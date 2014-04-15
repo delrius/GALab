@@ -4,26 +4,47 @@ import ga.lab.functions.Functions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class Operators {
 
 	public static final int LENGTH = 10;
 
-	public static int getHammingDistance(String ch1, String ch2) {
-		if (ch1.length() != ch2.length()) {
+	// map: pair encoded chromosome and double x
+	public static HashMap<Chromosome, Double> encodeMap(Functions fun) {
+		HashMap<Chromosome, Double> encodeResult = new HashMap<Chromosome, Double>();
+		for (Integer i = 1; i <= 1000; i++) {
+			encodeResult.put(new Chromosome(i), i / 1000.);
+		}
+		return encodeResult;
+	}
+
+	// map: double x and double fitness
+	public static HashMap<Double, Double> fitnessMap(Functions fun) {
+		HashMap<Double, Double> fitnessMap = new HashMap<Double, Double>();
+		for (Integer i = 1; i <= 1000; i++) {
+			fitnessMap.put(i / 1000., fun.calculate(i / 1000.));
+		}
+		return fitnessMap;
+	}
+
+	// calculate HammingDistance
+	public static int getHammingDistance(Chromosome ch1, Chromosome ch2) {
+		String chr1 = ch1.getChromosome();
+		String chr2 = ch2.getChromosome();
+		if (chr1.length() != chr2.length()) {
 			System.out.println("The length of two chromosomes don't match");
 		}
 		int distance = 0;
-		for (int i = 0; i < ch1.length(); i++) {
-			if (ch1.charAt(i) != ch2.charAt(i))
+		for (int i = 0; i < ch1.getChromosome().length(); i++) {
+			if (chr1.charAt(i) != chr2.charAt(i))
 				distance++;
 		}
 		return distance;
 	}
 
-	public static double sharingFunction(String ch1, String ch2, int radius,
-			int alpha) {
+	// calculate sharing functions
+	public static double sharingFunction(Chromosome ch1, Chromosome ch2,
+			int radius, int alpha) {
 		double sharingFunction;
 		if (getHammingDistance(ch1, ch2) < radius) {
 			sharingFunction = (1 - (Math.pow(
@@ -34,6 +55,7 @@ public class Operators {
 		return sharingFunction;
 	}
 
+	// calculate Niche radius
 	public static double calculateRadius(int dimension, int numberOfExtr,
 			double r) {
 
@@ -63,8 +85,9 @@ public class Operators {
 		return r;
 	}
 
-	public static double calculateNicheNumber(String ch1,
-			ArrayList<String> selectedChList, int N, int radius, int alpha) {
+	// calculate Niche number
+	public static double calculateNicheNumber(Chromosome ch1,
+			ArrayList<Chromosome> selectedChList, int N, int radius, int alpha) {
 		double m = 0;
 		for (int i = 0; i < N; i++) {
 			m = m + sharingFunction(ch1, selectedChList.get(i), radius, alpha);
@@ -72,40 +95,4 @@ public class Operators {
 		return m;
 	}
 
-	public static HashMap<Integer, Double> calcInitialFitnessMap(int n,
-			Functions function) {
-		HashMap<Integer, Double> initialFitnessMap = new HashMap<Integer, Double>();
-		for (int i = 1; i <= 1000; i++) {
-			initialFitnessMap.put(i, function.calculate(i / 1000.));
-		}
-		return initialFitnessMap;
-	}
-
-	public static String mutate(String ch) {
-		char[] chr = ch.toCharArray();
-		Random rand = new Random();
-		int index = rand.nextInt(LENGTH + 1);
-		// ch.replace(oldChar, newChar);
-		System.out.println(index);
-		if (chr[index] == '0') {
-			chr[index] = '1';
-		} else if (chr[index] == '1') {
-			chr[index] = '0';
-		}
-
-		System.out.println(chr[index]);
-		System.out.println(chr.toString());
-		return String.valueOf(chr);
-
-	}
-	
-//	public Chromosome mutate() {
-//		char[] arr  = gene.toCharArray();
-//		int idx     = rand.nextInt(arr.length);
-//		int delta   = (rand.nextInt() % 90) + 32;
-//		arr[idx]    = (char) ((arr[idx] + delta) % 122);
-//
-//		return new Chromosome(String.valueOf(arr));
-//	}
-//
 }
