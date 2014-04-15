@@ -1,44 +1,35 @@
 package ga.lab;
 
-import ga.lab.functions.Functions;
-
 import java.util.Random;
 
-public class Chromosome implements Comparable<Chromosome> {
+public class Chromosome {
 	public static final int LENGTH = 10;
 	private final String chromosome;
-	private final Double fitness;
 
 	private static final Random rand = new Random(System.currentTimeMillis());
 
-	public Chromosome(Integer chromosome, Functions function) {
+	public Chromosome(Integer chromosome) {
 		this.chromosome = encodeChromosome(chromosome);
-		this.fitness = calculateFitness(chromosome, function);
 	}
 
-	public Chromosome(String chromosome, Functions function) {
+	public Chromosome(String chromosome) {
 		this.chromosome = chromosome;
-		this.fitness = calculateFitness(decodeChromosome(chromosome), function);
 	}
 
 	public String getChromosome() {
 		return chromosome;
 	}
 
-	public Double getFitness() {
-		return fitness;
-	}
-
 	private static int grayEncode(Integer ch) {
 		return ch ^ (ch >>> 1);
 	}
 
-	public static int grayDecode(int n) {
-		int p = n;
-		while ((n >>>= 1) != 0)
-			p ^= n;
-		return p;
-	}
+	// public static int grayDecode(int n) {
+	// int p = n;
+	// while ((n >>>= 1) != 0)
+	// p ^= n;
+	// return p;
+	// }
 
 	public static String encodeChromosome(Integer ch) {
 		String res = Integer.toBinaryString(grayEncode(ch)).toString();
@@ -51,29 +42,30 @@ public class Chromosome implements Comparable<Chromosome> {
 
 	}
 
-	public static Integer decodeChromosome(String ch) {
-		int res=0;
-		//Byte t = new Byte(ch);
-	//	Byte f = new Byte(Integer.valueOf(ch));
-		
-//		System.out.println(f);
-		grayDecode(Integer.valueOf(ch));
-		return res;
-	}
+	// public static Integer decodeChromosome(String ch) {
+	// int res=0;
+	// //Byte t = new Byte(ch);
+	// // Byte f = new Byte(Integer.valueOf(ch));
+	//
+	// // System.out.println(f);
+	// grayDecode(Integer.valueOf(ch));
+	// return res;
+	// }
 
-	private static Double calculateFitness(Integer chromosome,
-			Functions function) {
-		return function.calculate((double) (chromosome) / 1000);
-	}
+	// private static Double calculateFitness(Integer chromosome,
+	// Functions function) {
+	// return function.calculate((double) (chromosome) / 1000);
+	// }
 
-//	public Chromosome mutate(Functions function) {
-//		char[] arr = chromosome.toCharArray();
-//		int idx = rand.nextInt(arr.length);
-//		int delta = (rand.nextInt() % 90) + 32;
-//		arr[idx] = (char) ((arr[idx] + delta) % 122);
-//
-//		return new Chromosome(String.valueOf(arr), calculateFitness(chromosome,function));
-//	}
+	// public Chromosome mutate(Functions function) {
+	// char[] arr = chromosome.toCharArray();
+	// int idx = rand.nextInt(arr.length);
+	// int delta = (rand.nextInt() % 90) + 32;
+	// arr[idx] = (char) ((arr[idx] + delta) % 122);
+	//
+	// return new Chromosome(String.valueOf(arr),
+	// calculateFitness(chromosome,function));
+	// }
 
 	/*
 	 * public Chromosome[] mate(Chromosome mate) { // Convert the chromosomes to
@@ -107,30 +99,4 @@ public class Chromosome implements Comparable<Chromosome> {
 	// return new Chromosome(String.valueOf(arr));
 	// }
 
-	@Override
-	public int compareTo(Chromosome c) {
-		if (fitness < c.fitness) {
-			return -1;
-		} else if (fitness > c.fitness) {
-			return 1;
-		}
-
-		return 0;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Chromosome)) {
-			return false;
-		}
-
-		Chromosome c = (Chromosome) o;
-		return (chromosome.equals(c.chromosome) && fitness == c.fitness);
-	}
-
-	@Override
-	public int hashCode() {
-		return new StringBuilder().append(chromosome).append(fitness)
-				.toString().hashCode();
-	}
 }
