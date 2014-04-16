@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Encoding {
 
     // static int par1 = 10;
-
+//deprecated
     public static HashMap<Integer, String> encode() {
         HashMap<Integer, String> encodeResult = new HashMap<>();
         for (int i = 0; i <= 1000; i++) {
@@ -41,5 +41,17 @@ public class Encoding {
         // System.out.println(Chromosome.decodeChromosome(a.getChromosome()));
         // HashMap<Chromosome, Double> b = Algorithm.encodeMap(Functions.F15);
         // System.out.println(b.get(a));
+        
+        //int n1=867;
+        //int n2=473;
+        Chromosome chr1 = new Chromosome(867);
+        Chromosome chr2 = new Chromosome(473);
+        System.out.println(chr1.getChromosome());
+        System.out.println(chr2.getChromosome());
+        Chromosome [] arr =chr1.crossover(chr2);
+        for (int j=0; j<arr.length;j++) {
+        	   System.out.println(arr[j].getChromosome());
+        }
+        System.out.println(Operators.calculateR(1, 0, 1));
     }
 }
