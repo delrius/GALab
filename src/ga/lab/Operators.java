@@ -93,4 +93,17 @@ public class Operators {
 		return m;
 	}
 
+	// calculate shared fitness function for 1 chr with exact amount of fitness
+	public static double calculateSharedFitness(Double fitness,
+			double nicheNumber) {
+		return fitness / nicheNumber;
+	}
+
+	// calculate euclidian distance
+	public static double getEuclidianDistance(int dimension, double maxInNiche,
+			double minInNiche) {
+		double euclidianDistance = 0;
+		// TODO
+		return euclidianDistance;
+	}
 }
