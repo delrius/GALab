@@ -19,7 +19,7 @@ public class Chromosome {
 		return chromosome;
 	}
 
-	private static int grayEncode(Integer ch) {
+	public static int grayEncode(Integer ch) {
 		return ch ^ (ch >>> 1);
 	}
 
