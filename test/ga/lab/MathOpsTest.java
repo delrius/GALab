@@ -11,7 +11,7 @@ public class MathOpsTest {
     @Test
     public void testRoot() throws Exception {
         random = new Random(System.currentTimeMillis());
-        for (int i=1; i < 20; i++) {
+        for (int i=1; i < 25; i++) {
             int dim = Math.abs(random.nextInt(10) + 1);
             int number = Math.abs(random.nextInt(1000));
             Double root = MathOps.root(Math.pow(number, dim), dim);
