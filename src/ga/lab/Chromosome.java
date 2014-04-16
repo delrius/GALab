@@ -59,8 +59,10 @@ public class Chromosome {
 
 		char[] chr1 = chromosome.toCharArray();
 		char[] chr2 = ch2.chromosome.toCharArray();
-
-		int crossPoint = rand.nextInt(chr1.length);
+		
+		// eigth positions - so rand (9)
+		int crossPoint = rand.nextInt(chr1.length-1);
+		//System.out.println(crossPoint);
 
 		char[] child1 = new char[chromosome.length()];
 		char[] child2 = new char[chromosome.length()];
