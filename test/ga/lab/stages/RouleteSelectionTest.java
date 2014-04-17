@@ -1,6 +1,6 @@
 package ga.lab.stages;
 
-import ga.lab.Individual;
+import ga.lab.entities.Individual;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
@@ -13,7 +13,7 @@ public class RouleteSelectionTest extends TestCase {
         List<Individual> list = new ArrayList<>();
         int n = 100;
         for (int i = 0; i < n; i++) {
-            list.add(Individual.getRandom());
+            list.add(Individual.random(3));
         }
         ISelection selectionAlg = new RouleteSelection();
 
@@ -29,7 +29,7 @@ public class RouleteSelectionTest extends TestCase {
         List<Individual> list = new ArrayList<>();
         int n = 100;
         for (int i = 0; i < n; i++) {
-            list.add(Individual.getRandom());
+            list.add(Individual.random(3));
         }
         ISelection selectionAlg = new RouleteSelection();
         int selNumber = list.size();

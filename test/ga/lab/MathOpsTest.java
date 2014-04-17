@@ -1,5 +1,6 @@
 package ga.lab;
 
+import ga.lab.utils.MathOps;
 import org.junit.Assert;
 import org.junit.Test;
 

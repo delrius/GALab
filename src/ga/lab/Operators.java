@@ -1,6 +1,8 @@
 package ga.lab;
 
+import ga.lab.entities.Individual;
 import ga.lab.functions.Functions;
+import ga.lab.utils.MathOps;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,12 +12,12 @@ public class Operators {
 	public static final int LENGTH = 10;
 
 	// map: pair encoded chromosome and double x
-	public static HashMap<Chromosome, Double> encodeMap(Functions fun) {
-		HashMap<Chromosome, Double> encodeResult = new HashMap<>();
-		for (Integer i = 0; i <= 1000; i++) {
-			encodeResult.put(new Chromosome(i), i / 1000.);
-		}
-		return encodeResult;
+	public static HashMap<Individual, Double> encodeMap(Functions fun) {
+		HashMap<Individual, Double> encodeResult = new HashMap<>();
+//		for (Integer i = 0; i <= 1000; i++) {
+//			encodeResult.put(new Individual(i), i / 1000.);
+//		}
+        return encodeResult;
 	}
 
 	// map: double x and double fitness
@@ -28,14 +30,14 @@ public class Operators {
 	}
 
 	// calculate HammingDistance
-	public static int getHammingDistance(Chromosome ch1, Chromosome ch2) {
-		String chr1 = ch1.getChromosome();
-		String chr2 = ch2.getChromosome();
+	public static int getHammingDistance(Individual ch1, Individual ch2) {
+		String chr1 = ch1.getRepresentation();
+		String chr2 = ch2.getRepresentation();
 		if (chr1.length() != chr2.length()) {
 			System.out.println("The length of two chromosomes don't match");
 		}
 		int distance = 0;
-		for (int i = 0; i < ch1.getChromosome().length(); i++) {
+		for (int i = 0; i < ch1.getRepresentation().length(); i++) {
 			if (chr1.charAt(i) != chr2.charAt(i))
 				distance++;
 		}
@@ -43,7 +45,7 @@ public class Operators {
 	}
 
 	// calculate sharing functions
-	public static double sharingFunction(Chromosome ch1, Chromosome ch2,
+	public static double sharingFunction(Individual ch1, Individual ch2,
 			int radius, int alpha) {
 		double sharingFunction;
 		if (getHammingDistance(ch1, ch2) < radius) {
@@ -84,8 +86,8 @@ public class Operators {
 	}
 
 	// calculate Niche number
-	public static double calculateNicheNumber(Chromosome ch1,
-			ArrayList<Chromosome> selectedChList, int N, int radius, int alpha) {
+	public static double calculateNicheNumber(Individual ch1,
+			ArrayList<Individual> selectedChList, int N, int radius, int alpha) {
 		double m = 0;
 		for (int i = 0; i < N; i++) {
 			m = m + sharingFunction(ch1, selectedChList.get(i), radius, alpha);

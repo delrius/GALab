@@ -1,4 +1,4 @@
-package ga.lab;
+package ga.lab.utils;
 
 public class MathOps {
     public static Double root(int number, int dimension) {

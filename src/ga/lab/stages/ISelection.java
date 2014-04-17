@@ -1,6 +1,6 @@
 package ga.lab.stages;
 
-import ga.lab.Individual;
+import ga.lab.entities.Individual;
 
 import java.util.List;
 
