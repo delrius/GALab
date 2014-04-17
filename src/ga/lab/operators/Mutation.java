@@ -16,7 +16,7 @@ public class Mutation extends UnaryOperator<Individual> {
         //mutation of chromosome
         Random rand = new Random(System.currentTimeMillis());
         char[] chr = val.getRepresentation().toCharArray();
-        int position = rand.nextInt(Chromosome.LENGTH) + 1;
+        int position = rand.nextInt(Chromosome.LENGTH - 1) + 1;
         if (chr[position] == '0') {
             chr[position] = '1';
         } else {

@@ -1,31 +1,40 @@
 package ga.lab.algorithm;
 
+import ga.lab.Operators;
 import ga.lab.entities.Individual;
-import ga.lab.functions.Function;
+import ga.lab.entities.Pair;
 import ga.lab.functions.Functions;
 import ga.lab.operators.CrossoverOperator;
 import ga.lab.operators.Mutation;
+import ga.lab.stages.EliteSelection;
+import ga.lab.stages.RouleteSelection;
 
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 public class Algorithm {
     final static int N = 1;
     final static int POP_SIZE = 100;  // population size
     final static int MAX_ITER = 500;             // max number of iterations
     final static double MUTATION_RATE = 0.05;     // probability of mutation
-    final static double CROSSOVER_RATE = 0.7;     // probability of crossover
-    final static Functions FUNCTION=Functions.F15;
+    final static double CROSSOVER_RATE = 1;     // probability of crossover
+    final public static Functions FUNCTION = Functions.F19;
+    final static int alpha = 1;
+    public static final int ELITE = 0;
 
     private static Random m_rand = new Random();  // random-number generator
     private Individual[] m_population;
     private double totalFitness;
+    private List<Double> best;
+    private List<Individual> all;
 
     public Algorithm() {
         m_population = new Individual[POP_SIZE];
 
+        Random rand = new Random(System.currentTimeMillis());
         // init population
         for (int i = 0; i < POP_SIZE; i++) {
-            m_population[i] = Individual.random(N);
+            m_population[i] = Individual.random(N, rand.nextInt(1001));
         }
 
         // evaluate current population
@@ -43,49 +52,125 @@ public class Algorithm {
 
     public double evaluate() {
         this.totalFitness = 0.0;
+        ArrayList<Double> fitnesses = new ArrayList<>();
+        ArrayList<Individual> individuals = new ArrayList<>();
         for (int i = 0; i < POP_SIZE; i++) {
-            this.totalFitness += m_population[i].evaluate(FUNCTION);
+            final Double val = FUNCTION.calculate(m_population[i].makeDoubleArray());
+
+            fitnesses.add(val);
+            individuals.add(m_population[i]);
+
+            this.totalFitness += m_population[i].getFitness();
         }
+        Collections.sort(fitnesses);
+        Collections.reverse(fitnesses);
+        all = individuals;
+        best = fitnesses.subList(0, 5);
         return this.totalFitness;
     }
-    
-    
 
-    public Individual rouletteWheelSelection() {
-        double randNum = m_rand.nextDouble() * this.totalFitness;
-        int idx;
-        for (idx = 0; idx < POP_SIZE && randNum > 0; ++idx) {
-            randNum -= m_population[idx].getFitness();
-        }
-        return m_population[idx - 1];
-    }
-
-    public Individual findBestIndividual() {
-        int idxMax = 0, idxMin = 0;
-        double currentMax = 0.0;
-        double currentMin = 1.0;
-        double currentVal;
-
-        for (int idx = 0; idx < POP_SIZE; ++idx) {
-            currentVal = m_population[idx].getFitness();
-            if (currentMax < currentMin) {
-                currentMax = currentMin = currentVal;
-                idxMax = idxMin = idx;
-            }
-            if (currentVal > currentMax) {
-                currentMax = currentVal;
-                idxMax = idx;
-            }
-            if (currentVal < currentMin) {
-                currentMin = currentVal;
-                idxMin = idx;
+    private void reEvaluate() {
+        HashMap<Pair<Integer, Integer>, Double> eucl = new HashMap<>();
+        for (int i = 0; i < m_population.length; ++i) {
+            for (int j = 0; j < m_population.length; j++) {
+                Pair<Integer, Integer> newPair = new Pair<>(i, j);
+                Pair<Integer, Integer> newPair1 = new Pair<>(j, i);
+                double dist = Operators.getEuclidianDistance(N, i, j, m_population);
+                eucl.put(newPair, dist);
+                eucl.put(newPair1, dist);
             }
         }
 
-        //return m_population[idxMin];      // minimization
-        return m_population[idxMax];        // maximization
+        double r = Operators.calculateR(N, 0, 1);
+        final double sigmaS = Operators.calculateRadius(N, (int) Math.pow(5, N), r);
+
+        HashMap<Pair<Integer, Integer>, Double> sharing = new HashMap<>();
+
+        for (int i = 0; i < m_population.length; ++i) {
+            for (int j = 0; j < m_population.length; j++) {
+                Pair<Integer, Integer> newPair = new Pair<>(i, j);
+                Pair<Integer, Integer> newPair1 = new Pair<>(j, i);
+                final double sharingValue = Operators.sharingFunction(m_population[i], m_population[j], eucl.get(newPair), sigmaS, alpha);
+                sharing.put(newPair, sharingValue);
+                sharing.put(newPair1, sharingValue);
+            }
+        }
+
+        for (int i = 0; i < m_population.length; ++i) {
+
+            List<Integer> individualList = new ArrayList<>();
+            for (int j = 0; j< m_population.length; ++j) {
+                Pair<Integer, Integer> pair = new Pair<>(i, j);
+                boolean isNotZero = sharing.get(pair) != 0.;
+                if (isNotZero) {
+                    individualList.add(j);
+                }
+            }
+
+            final double nicheNumber = Operators.calculateNicheNumber(i, sharing, individualList);
+
+            if (individualList.size()>0) {
+                final double current = m_population[i].getFitness();
+                m_population[i].setFitness(Operators.calculateSharedFitness(current, nicheNumber));
+            }
+        }
+    }
+//
+//    public Individual rouletteWheelSelection() {
+//        double randNum = m_rand.nextDouble() * this.totalFitness;
+//        int idx;
+//        for (idx = 0; idx < POP_SIZE && randNum > 0; ++idx) {
+//            randNum -= m_population[idx].getFitness();
+//        }
+//        return m_population[idx - 1];
+//    }
+
+    private static <T> String printList(List<T> list) {
+        StringBuilder builder = new StringBuilder();
+        for (T item: list) {
+            builder.append(item).append(" ");
+        }
+        return builder.toString();
     }
 
+
+    public static List<Individual> sort(List<Individual> list, Individual[] pop) {
+        Collections.sort(list);
+        Collections.reverse(list);
+        int i = 0;
+        while (i < list.size() - 2 ) {
+            int closest = i+1;
+            double min = Double.POSITIVE_INFINITY;
+            for (int j = i+1; j< list.size(); j++) {
+                final double euclidianDistance = Operators.getEuclidianDistance(N, list.get(i), list.get(j), pop);
+                if (euclidianDistance < min) {
+                    min = euclidianDistance;
+                    closest = j;
+                }
+            }
+            final Individual tmp = list.get(i + 1);
+            list.set(i+1, list.get(closest));
+            list.set(closest, tmp);
+            i++;
+        }
+
+        return list;
+    }
+
+    public static void print(Algorithm pop) {
+        File f = new File("del", "del" + ".txt");
+        try (FileWriter c = new FileWriter(f)) {
+            for (Individual d: pop.all) {
+                final Double x = d.makeDoubleArray()[0];
+                final Double val = FUNCTION.calculate(d.makeDoubleArray());
+
+                c.write(x + "-->" + val +"\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public static void main(String[] args) {
         Algorithm pop = new Algorithm();
@@ -93,20 +178,26 @@ public class Algorithm {
         Individual[] indiv = new Individual[2];
 
         // current population
-        System.out.print("Total Fitness = " + pop.totalFitness);
-//        System.out.println(" ; Best Fitness = " +
-//                pop.findBestIndividual().getFitnessValue());
+        System.out.println("Average Fitness = " + pop.totalFitness / pop.getPopulation().length);
+        System.out.println("Best = " + printList(pop.best));
 
         // main loop
         int count;
         for (int iter = 0; iter < MAX_ITER; iter++) {
             count = 0;
+            pop.reEvaluate();
 
+            Random random = new Random(System.currentTimeMillis());
+            List<Individual> selected = new RouleteSelection().performSelection(pop.getPopulation(), pop.getPopulation().length - ELITE, random);
+            List<Individual> elite = new EliteSelection().performSelection(pop.getPopulation(), ELITE, random);
+            selected.addAll(elite);
+
+            sort(selected, pop.getPopulation());
             // build new Population
             while (count < POP_SIZE) {
                 // Selection
-                indiv[0] = pop.rouletteWheelSelection();
-                indiv[1] = pop.rouletteWheelSelection();
+                indiv[0] = selected.get(count);
+                indiv[1] = selected.get(count + 1);
 
                 // Crossover
                 if (m_rand.nextDouble() < CROSSOVER_RATE) {
@@ -130,12 +221,10 @@ public class Algorithm {
 
             // reevaluate current population
             pop.evaluate();
-            System.out.print("Total Fitness = " + pop.totalFitness);
-//            System.out.println(" ; Best Fitness = " +
-//                    pop.findBestIndividual().getFitnessValue());
+//            System.out.println(iter + ":Average Fitness = " + pop.totalFitness / pop.getPopulation().length);
+//            System.out.println("Best = " + printList(pop.best));
         }
 
-        // best indiv
-        Individual bestIndiv = pop.findBestIndividual();
+        print(pop);
     }
 }

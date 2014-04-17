@@ -1,14 +1,13 @@
 package ga.lab.entities;
 
-import ga.lab.functions.Functions;
+import ga.lab.algorithm.Algorithm;
 
-import java.util.Random;
-
-public class Individual {
+public class Individual implements Comparable<Individual> {
 
 	private String representation;
 	private Chromosome[] chromosomes;
 	private int length;
+    private double fitness;
 
 	private Individual() {
 	}
@@ -17,15 +16,15 @@ public class Individual {
 		this.chromosomes = chromosomes;
 		this.length = chromosomes.length;
 		this.representation = convert(chromosomes);
+        this.fitness = Algorithm.FUNCTION.calculate(makeDoubleArray());
 	}
 
-	public static Individual random(int length) {
-		Random random = new Random(System.currentTimeMillis());
+	public static Individual random(int length, int val) {
 		SimpleChromosome[] genes = new SimpleChromosome[length];
 		for (int i = 0; i < length; i++) {
-			genes[i] = new SimpleChromosome(random.nextInt(1001));
+			genes[i] = new SimpleChromosome(val);
 		}
-		return new Individual(genes);
+        return new Individual(genes);
 	}
 
 	private String convert(Chromosome[] chromosomes) {
@@ -40,12 +39,15 @@ public class Individual {
 		return representation;
 	}
 
-	public double getFitness() {
-		// TODO: implement
-		return 0;
-	}
+    public double getFitness() {
+        return fitness;
+    }
 
-	public Double[] makeDoubleArray() {
+    public void setFitness(Double fitness) {
+        this.fitness = fitness;
+    }
+
+    public Double[] makeDoubleArray() {
 		Double[] tmp = new Double[chromosomes.length];
 		for (int i = 0; i < tmp.length; ++i) {
 			tmp[i] = chromosomes[i].getValue();
@@ -53,12 +55,30 @@ public class Individual {
 		return tmp;
 	}
 
-	public double evaluate(Functions function) {
-        return function.calculate(makeDoubleArray());
-    }
-
 	public Chromosome[] getChromosomes() {
 		return chromosomes;
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Individual that = (Individual) o;
+
+        if (representation != null ? !representation.equals(that.representation) : that.representation != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return representation != null ? representation.hashCode() : 0;
+    }
+
+    @Override
+    public int compareTo(Individual o) {
+        return Double.valueOf(fitness).compareTo(o.getFitness());
+    }
 }

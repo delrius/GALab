@@ -7,33 +7,35 @@ import java.util.List;
 import java.util.Random;
 
 public class RouleteSelection implements ISelection {
+    @Override
+    public List<Individual> performSelection(Individual[] population, int popSize, Random rng) {
 
-    public List<Individual> performSelection(List<Individual> aPopulation, int popSize) {
-        Random random = new Random();
-        List<Individual> populationNew = new ArrayList<>();
-        double totalFitness = 0.;
-        //sum the total fitness of the population
-        for (int i = 0; i < aPopulation.size(); i++) {
-            Individual currentIndividual = aPopulation.get(i);
-            totalFitness += currentIndividual.getFitness();
+        // Calculate the sum of all fitness values.
+        double aggregateFitness = 0;
+        for (Individual candidate : population) {
+            aggregateFitness += candidate.getFitness();
         }
-        /* sum the fitness of each individual in the population again
-         * until the running sum is >= to the randomly chosen number.
-         */
-        for (int i = 0; i < popSize; i++) {
-            //pick a random number between 0 and that sum.
-            double randomNumber = random.nextDouble() * totalFitness;
-            int runningSum = 0;
-            int index = 0;
-            int lastAddedIndex = 0;
-            assert (index < aPopulation.size());
-            while (runningSum < randomNumber) {
-                runningSum += aPopulation.get(index).getFitness();
-                lastAddedIndex = index;
+
+        List<Individual> selection = new ArrayList<Individual>(popSize);
+        // Pick a random offset between 0 and 1 as the starting point for selection.
+        double startOffset = rng.nextDouble();
+        double cumulativeExpectation = 0;
+        int index = 0;
+        for (Individual candidate : population) {
+            // Calculate the number of times this candidate is expected to
+            // be selected on average and add it to the cumulative total
+            // of expected frequencies.
+            cumulativeExpectation += candidate.getFitness() / aggregateFitness * popSize;
+
+            // If f is the expected frequency, the candidate will be selected at
+            // least as often as floor(f) and at most as often as ceil(f). The
+            // actual count depends on the random starting offset.
+            while (cumulativeExpectation > startOffset + index) {
+                selection.add(candidate);
                 index++;
             }
-            populationNew.add(aPopulation.get(lastAddedIndex));
         }
-        return populationNew;
+        assert(selection.size() == popSize);
+        return selection;
     }
 }
