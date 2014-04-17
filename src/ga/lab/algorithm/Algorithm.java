@@ -22,6 +22,8 @@ public class Algorithm {
     final static int alpha = 1;
     final public static int ELITE = 0;
     public static boolean isEuclidian = true;
+    public static boolean isDiploid = false;
+    public volatile static long  numberOfcalls = 0;
 
 
     private static Random m_rand = new Random();  // random-number generator
@@ -32,6 +34,7 @@ public class Algorithm {
     public Algorithm() {
         //TODO: uncomment for hemming
 //        isEuclidian = false;
+//        isDiploid = true;
         m_population = new Individual[POP_SIZE];
 
         Random rand = new Random(System.currentTimeMillis());
@@ -226,6 +229,7 @@ public class Algorithm {
         }
 
         print(pop);
+        System.out.println(numberOfcalls);
         System.out.println("End...");
     }
 }

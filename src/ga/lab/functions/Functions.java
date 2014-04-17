@@ -1,5 +1,7 @@
 package ga.lab.functions;
 
+import ga.lab.algorithm.Algorithm;
+
 import java.util.List;
 
 public enum Functions implements IFunction {
@@ -13,11 +15,13 @@ public enum Functions implements IFunction {
 
     @Override
     public Double calculate(List<Double> args) {
+        Algorithm.numberOfcalls++;
         return function.calculate(args);
     }
 
     @Override
     public Double calculate(Double... args) {
+        Algorithm.numberOfcalls++;
         return function.calculate(args);
     }
 }
