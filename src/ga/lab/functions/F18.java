@@ -12,6 +12,6 @@ public class F18 extends Function {
 			fitness += Math.pow(
 					Math.sin(5 * Math.PI * (Math.pow(x, 0.75) - 0.05)), 6);
 		}
-		return (1 / n) * fitness;
+		return (1. / n) * fitness;
 	}
 }

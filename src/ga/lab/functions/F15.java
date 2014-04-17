@@ -11,6 +11,6 @@ public class F15 extends Function {
         for (Double x : args) {
             fitness += Math.pow(Math.sin(5 * Math.PI * x), 6);
         }
-        return (1 / n) * fitness;
+        return (1. / n) * fitness;
     }
 }
