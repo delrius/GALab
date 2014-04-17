@@ -56,4 +56,9 @@ public class Individual {
 	public double evaluate(Functions function) {
         return function.calculate(makeDoubleArray());
     }
+
+	public Chromosome[] getChromosomes() {
+		return chromosomes;
+	}
+
 }

@@ -1,7 +1,9 @@
 package ga.lab;
 
+import ga.lab.entities.Chromosome;
 import ga.lab.entities.Individual;
 import ga.lab.functions.Functions;
+import ga.lab.operators.OperatorUtils;
 import ga.lab.utils.MathOps;
 
 import java.util.ArrayList;
@@ -14,10 +16,10 @@ public class Operators {
 	// map: pair encoded chromosome and double x
 	public static HashMap<Individual, Double> encodeMap(Functions fun) {
 		HashMap<Individual, Double> encodeResult = new HashMap<>();
-//		for (Integer i = 0; i <= 1000; i++) {
-//			encodeResult.put(new Individual(i), i / 1000.);
-//		}
-        return encodeResult;
+		// for (Integer i = 0; i <= 1000; i++) {
+		// encodeResult.put(new Individual(i), i / 1000.);
+		// }
+		return encodeResult;
 	}
 
 	// map: double x and double fitness
@@ -82,7 +84,7 @@ public class Operators {
 			accum += Math.pow((upper - lower), 2);
 		}
 
-        return (1. / 2) * Math.sqrt(accum);
+		return (1. / 2) * Math.sqrt(accum);
 	}
 
 	// calculate Niche number
@@ -102,10 +104,19 @@ public class Operators {
 	}
 
 	// calculate euclidian distance
-	public static double getEuclidianDistance(int dimension, double maxInNiche,
-			double minInNiche) {
+	public static double getEuclidianDistance(int dimension, double maxInPop,
+			double minInPop, Individual ind1, Individual ind2, Individual[] pop) {
 		double euclidianDistance = 0;
-		// TODO
+		Chromosome[] chr1 = ind1.getChromosomes();
+		Chromosome[] chr2 = ind2.getChromosomes();
+
+		for (int i = 0; i < dimension; i++) {
+			euclidianDistance = Math.sqrt((chr1[i].getValue() - chr2[i]
+					.getValue())
+					/ (OperatorUtils.maxInPop(pop) - OperatorUtils
+							.minInPop(pop)));
+
+		}
 		return euclidianDistance;
 	}
 }
