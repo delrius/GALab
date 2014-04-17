@@ -1,17 +1,20 @@
 package ga.lab.algorithm;
 
 import ga.lab.entities.Individual;
+import ga.lab.functions.Function;
+import ga.lab.functions.Functions;
 import ga.lab.operators.CrossoverOperator;
 import ga.lab.operators.Mutation;
 
 import java.util.Random;
 
 public class Algorithm {
-    final static int N = 2;
-    final static int POP_SIZE = 200;  // population size
-    final static int MAX_ITER = 2000;             // max number of iterations
+    final static int N = 1;
+    final static int POP_SIZE = 100;  // population size
+    final static int MAX_ITER = 500;             // max number of iterations
     final static double MUTATION_RATE = 0.05;     // probability of mutation
     final static double CROSSOVER_RATE = 0.7;     // probability of crossover
+    final static Functions FUNCTION=Functions.F15;
 
     private static Random m_rand = new Random();  // random-number generator
     private Individual[] m_population;
@@ -22,7 +25,7 @@ public class Algorithm {
 
         // init population
         for (int i = 0; i < POP_SIZE; i++) {
-            m_population[i] = Individual.random(2);
+            m_population[i] = Individual.random(N);
         }
 
         // evaluate current population
@@ -41,10 +44,12 @@ public class Algorithm {
     public double evaluate() {
         this.totalFitness = 0.0;
         for (int i = 0; i < POP_SIZE; i++) {
-            this.totalFitness += m_population[i].evaluate();
+            this.totalFitness += m_population[i].evaluate(FUNCTION);
         }
         return this.totalFitness;
     }
+    
+    
 
     public Individual rouletteWheelSelection() {
         double randNum = m_rand.nextDouble() * this.totalFitness;
