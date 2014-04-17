@@ -1,5 +1,6 @@
 package ga.lab;
 
+import ga.lab.algorithm.Algorithm;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,6 +30,9 @@ public class OperatorsTest {
 		double r = Operators.calculateR(n, 0, 1);
 		double actual = Operators.calculateRadius(n, numberOfExtr, r);
 		double expected = 0.1;
-		Assert.assertEquals("radius =" + actual, expected, actual, 0.01);
+        Algorithm.isEuclidian = false;
+        double actualHemming = Operators.calculateRadius(n, numberOfExtr, r);
+        Assert.assertEquals("radius =" + actual, expected, actual, 0.01);
+        Assert.assertEquals(2, actualHemming, 0.01);
 	}
 }

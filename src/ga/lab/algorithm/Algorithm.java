@@ -18,9 +18,11 @@ public class Algorithm {
     final static int MAX_ITER = 500;             // max number of iterations
     final static double MUTATION_RATE = 0.05;     // probability of mutation
     final static double CROSSOVER_RATE = 1;     // probability of crossover
-    final public static Functions FUNCTION = Functions.F19;
+    final public static Functions FUNCTION = Functions.F15;
     final static int alpha = 1;
-    public static final int ELITE = 0;
+    final public static int ELITE = 0;
+    public static boolean isEuclidian = true;
+
 
     private static Random m_rand = new Random();  // random-number generator
     private Individual[] m_population;
@@ -29,6 +31,8 @@ public class Algorithm {
     private List<Individual> all;
 
     public Algorithm() {
+        //TODO: uncomment for hemming
+//        isEuclidian = false;
         m_population = new Individual[POP_SIZE];
 
         Random rand = new Random(System.currentTimeMillis());
@@ -75,7 +79,7 @@ public class Algorithm {
             for (int j = 0; j < m_population.length; j++) {
                 Pair<Integer, Integer> newPair = new Pair<>(i, j);
                 Pair<Integer, Integer> newPair1 = new Pair<>(j, i);
-                double dist = Operators.getEuclidianDistance(N, i, j, m_population);
+                double dist = Operators.getDistance(N, i, j, m_population);
                 eucl.put(newPair, dist);
                 eucl.put(newPair1, dist);
             }
@@ -90,7 +94,7 @@ public class Algorithm {
             for (int j = 0; j < m_population.length; j++) {
                 Pair<Integer, Integer> newPair = new Pair<>(i, j);
                 Pair<Integer, Integer> newPair1 = new Pair<>(j, i);
-                final double sharingValue = Operators.sharingFunction(m_population[i], m_population[j], eucl.get(newPair), sigmaS, alpha);
+                final double sharingValue = Operators.sharingFunction(eucl.get(newPair), sigmaS, alpha);
                 sharing.put(newPair, sharingValue);
                 sharing.put(newPair1, sharingValue);
             }
@@ -142,7 +146,7 @@ public class Algorithm {
             int closest = i+1;
             double min = Double.POSITIVE_INFINITY;
             for (int j = i+1; j< list.size(); j++) {
-                final double euclidianDistance = Operators.getEuclidianDistance(N, list.get(i), list.get(j), pop);
+                final double euclidianDistance = Operators.getDistance(N, list.get(i), list.get(j), pop);
                 if (euclidianDistance < min) {
                     min = euclidianDistance;
                     closest = j;
@@ -161,9 +165,11 @@ public class Algorithm {
         File f = new File("del", "del" + ".txt");
         try (FileWriter c = new FileWriter(f)) {
             for (Individual d: pop.all) {
-                final Double x = d.makeDoubleArray()[0];
+                String x = "";
+                for (Double xx: d.makeDoubleArray()) {
+                    x+=xx + " ";
+                }
                 final Double val = FUNCTION.calculate(d.makeDoubleArray());
-
                 c.write(x + "-->" + val +"\n");
             }
         } catch (IOException e) {
