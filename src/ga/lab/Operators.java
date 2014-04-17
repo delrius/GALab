@@ -50,10 +50,15 @@ public class Operators {
                                          double r) {
         final double euclRadius = r / MathOps.root(numberOfExtr, dimension);
         if (Algorithm.isEuclidian) {
-            return euclRadius;
+//            return euclRadius;
+            return 0.1;
         } else {
-            int numberOfNiches = (int) (1 / (euclRadius*2));
-            return (dimension * Chromosome.LENGTH) / numberOfNiches;
+//            int n = (int) (1 / euclRadius);
+//            if (n == 0) {
+//                n = 10;
+//            }
+//            return (dimension * Chromosome.LENGTH) / n;
+              return (dimension * Chromosome.LENGTH) / 10;
         }
     }
 

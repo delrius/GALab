@@ -27,7 +27,6 @@ public class Algorithm {
     private static Random m_rand = new Random();  // random-number generator
     private Individual[] m_population;
     private double totalFitness;
-    private List<Double> best;
     private List<Individual> all;
 
     public Algorithm() {
@@ -66,10 +65,7 @@ public class Algorithm {
 
             this.totalFitness += m_population[i].getFitness();
         }
-        Collections.sort(fitnesses);
-        Collections.reverse(fitnesses);
         all = individuals;
-        best = fitnesses.subList(0, 5);
         return this.totalFitness;
     }
 
@@ -164,13 +160,14 @@ public class Algorithm {
     public static void print(Algorithm pop) {
         File f = new File("del", "del" + ".txt");
         try (FileWriter c = new FileWriter(f)) {
+            Collections.sort(pop.all);
+            Collections.reverse(pop.all);
             for (Individual d: pop.all) {
                 String x = "";
                 for (Double xx: d.makeDoubleArray()) {
                     x+=xx + " ";
                 }
-                final Double val = FUNCTION.calculate(d.makeDoubleArray());
-                c.write(x + "-->" + val +"\n");
+                c.write(x + "-->" + d.getFitness() +"\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -182,10 +179,7 @@ public class Algorithm {
         Algorithm pop = new Algorithm();
         Individual[] newPop = new Individual[POP_SIZE];
         Individual[] indiv = new Individual[2];
-
-        // current population
-        System.out.println("Average Fitness = " + pop.totalFitness / pop.getPopulation().length);
-        System.out.println("Best = " + printList(pop.best));
+        System.out.println("start...");
 
         // main loop
         int count;
@@ -232,5 +226,6 @@ public class Algorithm {
         }
 
         print(pop);
+        System.out.println("End...");
     }
 }
