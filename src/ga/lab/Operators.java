@@ -113,8 +113,8 @@ public class Operators {
 		for (int i = 0; i < dimension; i++) {
 			euclidianDistance = Math.sqrt((chr1[i].getValue() - chr2[i]
 					.getValue())
-					/ (OperatorUtils.maxInPop(pop) - OperatorUtils
-							.minInPop(pop)));
+					/ (OperatorUtils.maxInPop(pop, i) - OperatorUtils
+							.minInPop(pop, i)));
 
 		}
 		return euclidianDistance;
