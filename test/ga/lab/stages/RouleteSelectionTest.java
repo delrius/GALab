@@ -11,9 +11,10 @@ import java.util.Random;
 public class RouleteSelectionTest extends TestCase {
     public void testPerformSelectionSizeDifferent() throws Exception {
         List<Individual> list = new ArrayList<>();
+        Random random = new Random(System.currentTimeMillis());
         int n = 100;
         for (int i = 0; i < n; i++) {
-            list.add(Individual.random(3, 100));
+            list.add(Individual.random(3, random));
         }
         ISelection selectionAlg = new RouleteSelection();
 
@@ -28,8 +29,9 @@ public class RouleteSelectionTest extends TestCase {
     public void testPerformSelectionSizeEqual() throws Exception {
         List<Individual> list = new ArrayList<>();
         int n = 100;
+        Random random = new Random(System.currentTimeMillis());
         for (int i = 0; i < n; i++) {
-            list.add(Individual.random(3, 100));
+            list.add(Individual.random(3, random));
         }
         ISelection selectionAlg = new RouleteSelection();
         int selNumber = list.size();

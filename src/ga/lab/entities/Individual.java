@@ -2,6 +2,8 @@ package ga.lab.entities;
 
 import ga.lab.algorithm.Algorithm;
 
+import java.util.Random;
+
 public class Individual implements Comparable<Individual> {
 
 	private String representation;
@@ -19,11 +21,15 @@ public class Individual implements Comparable<Individual> {
         this.fitness = Algorithm.FUNCTION.calculate(makeDoubleArray());
 	}
 
-	public static Individual random(int length, int val) {
-		SimpleChromosome[] genes = new SimpleChromosome[length];
+	public static Individual random(int length, Random random) {
+		Chromosome[] genes = new Chromosome[length];
 		for (int i = 0; i < length; i++) {
-			genes[i] = new SimpleChromosome(val);
-		}
+            if (Algorithm.isDiploid) {
+                genes[i] = DiploidChromosome.buildRandom(random);
+            } else {
+			    genes[i] = SimpleChromosome.buildRandom(random);
+            }
+        }
         return new Individual(genes);
 	}
 

@@ -10,8 +10,7 @@ public class SimpleChromosome extends Chromosome {
     private SimpleChromosome() {
     }
 
-    // TODO: check for range
-    public SimpleChromosome(String value) {
+    private SimpleChromosome(String value) {
         Integer val = Integer.parseInt(value, 2);
         Random random = new Random(System.currentTimeMillis());
         if (val > 1000) {
@@ -26,20 +25,9 @@ public class SimpleChromosome extends Chromosome {
         this.representation = encodeChromosome(this.value);
     }
 
-    public SimpleChromosome(int value) {
+    private SimpleChromosome(int value) {
         this.value = value;
         this.representation = encodeChromosome(value);
-    }
-
-    public static int grayEncode(Integer ch) {
-        return ch ^ (ch >>> 1);
-    }
-
-    public static int grayDecode(int n) {
-        int p = n;
-        while ((n >>>= 1) != 0)
-            p ^= n;
-        return p;
     }
 
     // encode chromosome
@@ -61,4 +49,11 @@ public class SimpleChromosome extends Chromosome {
         return value / 1000.;
     }
 
+    public static SimpleChromosome buildRandom(Random rand) {
+        return new SimpleChromosome(rand.nextInt(1001));
+    }
+
+    public static SimpleChromosome buildFromString(String st) {
+        return new SimpleChromosome(st);
+    }
 }

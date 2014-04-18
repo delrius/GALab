@@ -34,13 +34,13 @@ public class Algorithm {
     public Algorithm() {
         //TODO: uncomment for hemming
 //        isEuclidian = false;
-//        isDiploid = true;
+        isDiploid = true;
         m_population = new Individual[POP_SIZE];
 
         Random rand = new Random(System.currentTimeMillis());
         // init population
         for (int i = 0; i < POP_SIZE; i++) {
-            m_population[i] = Individual.random(N, rand.nextInt(1001));
+            m_population[i] = Individual.random(N, rand);
         }
 
         // evaluate current population
